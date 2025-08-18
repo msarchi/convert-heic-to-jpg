@@ -22,4 +22,4 @@ nel docker-compose.yml mappare il volume
 
 cambiando la prima parte, che è il path sull'host, sia per il path dove sono presenti le immagini che per il folder dove verranno salvate le immagini convertite
 
-Accedi all'applicazione su http://localhost:3000.
+Accedi all'applicazione su http://localhost:3005.
