@@ -5,18 +5,18 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
     ports:
-      - "3000:3000"
+      - "3005:3005"
     depends_on:
       - backend
     environment:
-      - REACT_APP_API_URL=http://backend:5000
+      - REACT_APP_API_URL=http://backend:3006
 
   backend:
     build:
       context: ./backend
       dockerfile: Dockerfile
     ports:
-      - "5000:5000"
+      - "3006:3006"
     volumes:
       - ./images:/app/images:ro
       - ./converted:/app/converted

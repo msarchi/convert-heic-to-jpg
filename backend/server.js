@@ -5,7 +5,7 @@ const path = require('path');
 const sharp = require('sharp');
 
 const app = express();
-const PORT = 5000;
+const PORT = 3006;
 
 app.use(cors());
 app.use(express.json());
