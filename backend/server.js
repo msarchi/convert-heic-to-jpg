@@ -40,7 +40,7 @@ app.post('/api/convert', async (req, res) => {
       const inputPath = path.join(folder, file);
       const outputPath = path.join(outputDir, file.replace(/\.heic$/i, '.jpg'));
       await sharp(inputPath)
-        .jpeg({ quality: 80 })
+        .jpeg({ quality: 100 })
         .toFile(outputPath);
     }
 
