@@ -1,17 +1,17 @@
 version: '3.8'
 services:
-  frontend:
+  heic-to-jpg-frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile
     ports:
       - "3005:3005"
     depends_on:
-      - backend
+      - heic-to-jpg-backend
     environment:
       - REACT_APP_API_URL=http://backend:3006
 
-  backend:
+  heic-to-jpg-backend:
     build:
       context: ./backend
       dockerfile: Dockerfile
