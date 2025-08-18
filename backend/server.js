@@ -30,8 +30,7 @@ app.post('/api/convert', async (req, res) => {
   }
 
   try {
-    const outputDir = path.join(folder, 'converted_jpg');
-    await fs.ensureDir(outputDir);
+    const outputDir = '/app/converted';
 
     const files = await fs.readdir(folder);
     const heicFiles = files.filter(file => file.toLowerCase().endsWith('.heic'));

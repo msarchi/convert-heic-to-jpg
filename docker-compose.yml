@@ -18,4 +18,5 @@ services:
     ports:
       - "5000:5000"
     volumes:
-      - ./images:/app/images
+      - ./images:/app/images:ro
+      - ./converted:/app/converted
