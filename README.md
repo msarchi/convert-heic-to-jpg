@@ -9,4 +9,5 @@ Esegui
 docker-compose up --build
 ```
 dalla root del progetto per costruire e avviare i container.
+
 Accedi all'applicazione su http://localhost:3000.
