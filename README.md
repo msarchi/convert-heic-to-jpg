@@ -16,7 +16,7 @@ nel docker-compose.yml mappare il volume
 
 ```yaml
     volumes:
-      - ./images:/app/images
+      - ./images:/app/images:ro
       - ./converted:/app/converted
 ```
 
