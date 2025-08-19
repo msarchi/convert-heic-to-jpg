@@ -4,7 +4,7 @@ import FolderIcon from '@mui/icons-material/Folder';
 import axios from 'axios';
 
 const BE_PORT = 3006;
-const API_URL = `${location.hostname}:${BE_PORT}`;
+const API_URL = `http://${location.hostname}:${BE_PORT}`;
 
 function App() {
   const [folders, setFolders] = useState([]);
