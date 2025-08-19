@@ -9,7 +9,7 @@ services:
     depends_on:
       - heic-to-jpg-backend
     environment:
-      - REACT_APP_API_URL=http://backend:3006
+      - VITE_API_URL=http://host:3006
 
   heic-to-jpg-backend:
     build:

@@ -2,7 +2,8 @@ const express = require('express');
 const cors = require('cors');
 const fs = require('fs-extra');
 const path = require('path');
-const sharp = require('sharp');
+const { promisify } = require('util');
+const convert = require('heic-convert');
 
 const app = express();
 const PORT = 3006;
@@ -38,13 +39,18 @@ app.post('/api/convert', async (req, res) => {
     for (const file of heicFiles) {
       const inputPath = path.join(folder, file);
       const outputPath = path.join(outputDir, file.replace(/\.heic$/i, '.jpg'));
-      await sharp(inputPath)
-        .jpeg({ quality: 100 })
-        .toFile(outputPath);
+      const inputBuffer = await promisify(fs.readFile)(inputPath);
+      const outputBuffer = await convert({
+        buffer: inputBuffer,
+        format: 'JPEG',
+        quality: 1 // JPEG quality between 0 and 1
+      });
+      await promisify(fs.writeFile)(outputPath, outputBuffer);
     }
 
     res.json({ message: `Conversione completata: ${heicFiles.length} file convertiti` });
   } catch (error) {
+    console.log({error})
     res.status(500).json({ error: 'Errore nella conversione delle immagini' });
   }
 });
