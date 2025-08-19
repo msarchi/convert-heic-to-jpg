@@ -3,6 +3,9 @@ import { Container, Box, Typography, Button, List, ListItem, ListItemText, Circu
 import FolderIcon from '@mui/icons-material/Folder';
 import axios from 'axios';
 
+const BE_PORT = 3006;
+const API_URL = `${location.hostname}:${BE_PORT}`;
+
 function App() {
   const [folders, setFolders] = useState([]);
   const [currentPath, setCurrentPath] = useState('/app/images');
@@ -17,7 +20,7 @@ function App() {
   const fetchFolders = async (path) => {
     try {
       setLoading(true);
-      const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/folders`, { params: { path } });
+      const response = await axios.get(`${API_URL}/api/folders`, { params: { path } });
       setFolders(response.data.folders);
     } catch (error) {
       setMessage('Errore nel caricamento delle cartelle');
@@ -34,7 +37,7 @@ function App() {
   const handleConvert = async () => {
     try {
       setLoading(true);
-      const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/convert`, { folder: selectedFolder });
+      const response = await axios.post(`${API_URL}/api/convert`, { folder: selectedFolder });
       setMessage(response.data.message);
     } catch (error) {
       setMessage('Errore nella conversione delle immagini');
