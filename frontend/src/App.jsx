@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Container, Box, Typography, Button, List, ListItem, ListItemText, CircularProgress } from '@mui/material';
 import FolderIcon from '@mui/icons-material/Folder';
 import axios from 'axios';
@@ -11,8 +11,8 @@ function App() {
   const [currentPath, setCurrentPath] = useState('/app/images');
   const [selectedFolder, setSelectedFolder] = useState('');
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState('');
-  console.log({selectedFolder, currentPath})
+  const [responseData, setResponseData] = useState('');
+  
   useEffect(() => {
     fetchFolders(currentPath);
   }, [currentPath]);
@@ -20,10 +20,10 @@ function App() {
   const fetchFolders = async (path) => {
     try {
       setLoading(true);
-      const response = await axios.get(`${API_URL}/api/folders`, { params: { path } });
-      setFolders(response.data.folders);
+      const foldersResponse = await axios.get(`${API_URL}/api/folders`, { params: { path } });
+      setFolders(foldersResponse.data.folders);
     } catch (error) {
-      setMessage('Errore nel caricamento delle cartelle');
+      setResponseData(error.response.data);
     } finally {
       setLoading(false);
     }
@@ -37,10 +37,10 @@ function App() {
   const handleConvert = async () => {
     try {
       setLoading(true);
-      const response = await axios.post(`${API_URL}/api/convert`, { folder: selectedFolder });
-      setMessage(response.data.message);
+      const convertResonse = await axios.post(`${API_URL}/api/convert`, { folder: selectedFolder });
+      setResponseData(convertResonse.data);
     } catch (error) {
-      setMessage('Errore nella conversione delle immagini');
+      setResponseData(error.response.data);
     } finally {
       setLoading(false);
     }
@@ -53,6 +53,16 @@ function App() {
       setSelectedFolder(parentPath);
     }
   };
+
+  const errorMessages = useMemo(() => responseData.errors ? (
+    Array.isArray(responseData.errors) ? 
+      responseData.errors.map(({message, error}, index) => (
+        <Box key={index} sx={{ mb: 2 }}>
+          <Typography>{message}</Typography>
+          <pre style={{whiteSpace: 'normal'}}>{JSON.stringify(error, null, 2)}</pre>
+        </Box>
+      )) :  <pre style={{whiteSpace: 'normal'}}>{JSON.stringify(responseData.errors, null, 2)}</pre>) : 
+      null, [responseData]);
 
   return (
     <Container maxWidth="md">
@@ -90,9 +100,12 @@ function App() {
             </Button>
           </Box>
         )}
-        {message && (
-          <Typography color={message.includes('Errore') ? 'error' : 'success'} sx={{ mt: 2 }}>
-            {message}
+        {responseData && (
+          <Typography color={responseData.errors ? 'error' : 'success'} sx={{ mt: 2 }}>
+            {responseData.message}
+            <br />
+            <br />
+            {errorMessages}
           </Typography>
         )}
       </Box>
